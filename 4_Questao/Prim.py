@@ -11,12 +11,8 @@ class PrimClass:
         self.prim()
 
     def prim(self):
-        v = []
-
-        while(len(v) != self.Vertices):
-            v.append(0)
-
-        v[self.Inicio] = 1
+        visitados = [False] * self.Vertices
+        visitados[self.Inicio] = True
         pilha = []
 
         for i in range(0, self.Vertices-1):
@@ -25,13 +21,14 @@ class PrimClass:
             e = []
 
             for j in range(0, self.Vertices):
-                if v[j] == 1:
+                if visitados[j] == True:
                     for k in range(0, self.Vertices):
-                        if v[k] == 0 and self.Grafo[j][k] < minimo:
+                        if visitados[k] == False and self.Grafo[j][k] < minimo:
                             vertice = k
                             e = [j, k]
                             minimo = self.Grafo[j][k]
 
-            v[vertice] = 1
+            visitados[vertice] = True
             pilha.append(e)
+            
         print(pilha)
