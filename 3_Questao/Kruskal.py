@@ -1,52 +1,69 @@
-V = 6
-G = [[0,	337,	1846,	1464,	0,	0,	2704],
-     [337,	0,	0,	1235,	2342,	0,	0],
-     [1846,	0,	0,	802,	0,	740,	867],
-     [1464,	1235,	802,	0,	1121,	0,	0],
-     [0,	2342,	0,	1121,	0,	1090,	1258],
-     [0,	0,	740,	0,	1090,	0,	187],
-     [2704,	0,	867,	0,	1258,	187,	0]]
+class Kruskal: 
+    AU = []
+    Vertice = 0
+    Grafo = []
+    Auxiliar = []
+    Visitados = []
+    Verificados = []
+    A = []
+    Lugares = {}
+    
+    def __init__(self, vertices, grafos, lugar):
+        self.Vertice = vertices
+        self.Grafo = grafos
+        self.Lugares = lugar
 
-A = []
+        for i in range(self.Vertice):
+            for j in range(i+1,self.Vertice):
+                if(self.Grafo[i][j]!=0):
+                    self.A.append((i,j,self.Grafo[i][j]))
 
-for i in range(V):
-    for j in range(i+1,V):
-        if(G[i][j]!=0):
-            A.append((i,j,G[i][j]))
+        self.A.sort(key=lambda x: x[2])
 
-A.sort(key=lambda x: x[2])
+        for i in self.A:    
+           if not self.isCiclico(self.AU+[i]):
+               self.AU.append(i)
 
-AU = []
+        for i in self.AU:
+            lugarUm = self.Lugares[i[0]]
+            lugarDois = self.Lugares[i[1]]
+            print(lugarUm + ' - ' + lugarDois + '| Custo: ' + str(i[2]))
 
-def checkVizinhos(visitados,grafo,atual):
-    if visitados[atual]:
-        return True
-    visitados[atual]=True
-    for i in grafo:
-        if i[0]==atual and checkVizinhos(visitados,grafo,i[1]):
+
+        
+    def checkVizinhos(self,grafo, atual):
+
+        if self.Visitados[atual]:
             return True
-    return False
+
+        self.Visitados[atual]=True
+
+        for i in grafo:
+
+            if i[0]==atual and self.checkVizinhos(grafo,i[1]):
+                return True
+
+        return False
     
 
-def isCiclico(grafo):
-    verificados = [False] * V
-    for i in grafo:
-        if verificados[i[0]]:
-            continue 
-        else:
-            verificados[i[0]]=True
-        visitados = [False] * V
-        if checkVizinhos(visitados,grafo,i[0]):
-            return True;
-    return False;
+    def isCiclico(self, grafoT):
+        self.Verificados = [False] * self.Vertice
 
-for i in A:    
-   if not isCiclico(AU+[i]):
-       AU.append(i)
-   
+        for i in grafoT:
 
-for i in AU:
-    print(i)
+            if self.Verificados[i[0]]:
+                continue 
+            else:
+                self.Verificados[i[0]]=True
+
+            self.Visitados = [False] * self.Vertice
+
+            if self.checkVizinhos(grafoT, i[0]):
+                return True;
+
+        return False;
+
+    
 
 
 
