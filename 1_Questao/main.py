@@ -1,4 +1,3 @@
-from BFS import ClasseBFS
 from DFS import ClasseDFS
                
 GrafoRep = [  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

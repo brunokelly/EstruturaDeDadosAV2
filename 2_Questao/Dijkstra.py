@@ -1,37 +1,46 @@
 class Dijkstra:
-    Vertices = 0
-    Grafo = []
-    Inicio = 0
-    Destino = 0
 
-    def __init__(self, grafo, vertices, inicio, destino):
-        self.Vertices = vertices
-        self.Grafo = grafo
-        self.Inicio = inicio
-        self.Destino = destino
-        self.prim()
+    def DistanciaMinima(self,distancias,pilha):
+        valorMinimo = float("Inf")
+        indexValorMinimo = -1
 
-    def prim(self):
-        visitados = [False] * self.Vertices
-        visitados[self.Inicio] = True
+        for i in range(len(distancias)):
+
+            if distancias[i] < valorMinimo and i in pilha:
+                valorMinimo = distancias[i]
+                indexValorMinimo = i
+
+        return indexValorMinimo
+ 
+    def caminhoPai(self, caminhoPai, atual):
+        if caminhoPai[atual] == -1 :
+            print(atual + 1, end=" ")
+            return
+        self.caminhoPai(caminhoPai , caminhoPai[atual])
+        print (atual + 1, end=" ")
+
+    def dijkstra(self, grafo, inicio, destinos):
+ 
+        linha = len(grafo)
+        coluna = len(grafo[0])
+        distancias = [float("Inf")] * linha
+        caminhoPai = [-1] * linha
+        distancias[inicio] = 0
         pilha = []
 
-        for i in range(1, self.Vertices-1):
-            minimo = 999999
-            vertice = 0
-            e = []
+        for i in range(linha):
+            pilha.append(i)
 
-            for j in range(1, self.Vertices):
-                if visitados[j] == True:
-                    for k in range(0, self.Vertices):
-                        if visitados[k] == False and self.Grafo[j][k] < minimo:
-                            vertice = k
-                            e = [j, k]
-                            minimo = self.Grafo[j][k]
-
-            visitados[vertice] = True
-            pilha.append(e)
-            
-        print(pilha)
-
-
+        while pilha:
+            valorMinimo = self.DistanciaMinima(distancias,pilha)  
+            pilha.remove(valorMinimo)
+            for i in range(coluna):
+                if grafo[valorMinimo][i] and i in pilha:
+                    if distancias[valorMinimo] + grafo[valorMinimo][i] < distancias[i]:
+                        distancias[i] = distancias[valorMinimo] + grafo[valorMinimo][i]
+                        caminhoPai[i] = valorMinimo
+ 
+        for i in range(1, len(distancias)):
+           if i in destinos: 
+                print("\nDestino: %d para %d | Distancia: %.2f | " % (inicio + 1, i , float(distancias[i])), end=" ")
+                self.caminhoPai(caminhoPai ,i)
